@@ -11,6 +11,7 @@ contributors:
   - dev-itsheng
   - evenstensberg
   - hagemaruwu
+  - raj-sapalya
 ---
 
 A loader is a node module that exports a function. This function is called when a resource should be transformed by this loader. The given function will have access to the [Loader API](/api/loaders/) using the `this` context provided to it.
@@ -100,6 +101,52 @@ export default {
   },
 };
 ```
+
+## Pitching loaders
+
+Loaders normally run **right to left**. A loader can also export a
+`pitch` function, which runs **left to right** before the normal phase
+begins. This allows a loader to pass data to its own normal phase or
+short-circuit the remaining loader chain.
+
+```js
+// my-loader.js
+export default function (source) {
+  // Normal phase — runs right to left
+  const prefix = this.data.value ?? "";
+  return `${prefix}\n${source}`;
+}
+
+export function pitch(remainingRequest, precedingRequest, data) {
+  // Pitch phase — runs left to right before normal loaders
+  data.value = "/* processed by my-loader */";
+}
+```
+
+T> `data` is shared only between the `pitch` and normal functions of
+the same loader. It is not shared across different loaders in
+the chain.
+
+### Short-circuiting the loader chain
+
+If a `pitch` function returns a value, webpack skips the remaining
+loaders to the right and reverses immediately. This can be useful when
+you want to generate module code early and bypass the normal phase.
+
+```js
+export function pitch(remainingRequest) {
+  return `
+import style from ${JSON.stringify(`!!${remainingRequest}`)};
+const el = document.createElement("style");
+el.textContent = style;
+document.head.appendChild(el);
+  `;
+}
+```
+
+W> When a `pitch` function returns a value, the default export of that
+loader does not run. Only use this pattern when you intend to replace
+the normal processing pipeline.
 
 ## Guidelines
 
