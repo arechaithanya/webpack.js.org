@@ -234,6 +234,31 @@ export default {
 
 With the above, `@/components/Button` resolves to `src/components/Button` without any additional plugins or duplicating aliases in `resolve.alias`.
 
+### Migrating from `tsconfig-paths-webpack-plugin`
+
+If you're currently using `tsconfig-paths-webpack-plugin`, you can drop it in favor of the built-in `resolve.tsconfig` option:
+
+```diff
+- import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
+
+  export default {
+    resolve: {
+-     plugins: [new TsconfigPathsPlugin()],
++     // Auto-find tsconfig.json in the project root
++     tsconfig: true,
++
++     // Or explicitly point to one
++     // tsconfig: './tsconfig.app.json'
+    },
+  };
+```
+
+You can then remove the package from your project:
+
+```bash
+npm uninstall tsconfig-paths-webpack-plugin
+```
+
 W> `resolve.tsconfig` only handles module resolution — it does not transpile TypeScript. You still need `ts-loader`, `babel-loader` with `@babel/preset-typescript`, or another transpilation step.
 
 ## Loader
