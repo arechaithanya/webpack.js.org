@@ -161,7 +161,7 @@ Webpack solves these issues by explicitly declaring dependencies and bundling th
 
 ## Creating a Bundle
 
-First we'll tweak our directory structure slightly, separating the "source" code (`./src`) from our "distribution" code (`./dist`). The "source" code is the code that we'll write and edit. The "distribution" code is the minimized and optimized `output` of our build process that will eventually be loaded in the browser. Tweak the directory structure as follows:
+First we'll tweak our directory structure slightly, separating the "source" code (`./src`) from our "distribution" code (`./dist`).Separating source and distribution code helps keep development files clean while ensuring only optimized files are served to the browser in production.
 
 **project**
 
