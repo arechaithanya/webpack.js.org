@@ -38,6 +38,18 @@ describe("SidebarItem", () => {
     expect(wrapper.getAttribute("data-open")).toBe("true");
   });
 
+  it("matches URLs with regexp characters literally", () => {
+    const { container } = renderWithRouter(
+      <SidebarItem
+        {...defaultProps}
+        currentPage="/api/v3.0/[draft]"
+        url="/api/v3.0/[draft]/"
+      />,
+    );
+    const wrapper = container.firstChild;
+    expect(wrapper.getAttribute("data-open")).toBe("true");
+  });
+
   it("toggles open state when chevron button is clicked", () => {
     const anchors = [
       {

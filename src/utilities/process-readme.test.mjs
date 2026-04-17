@@ -44,6 +44,17 @@ describe("processReadme", () => {
     );
   });
 
+  it("preserves additional hash fragments when lowercasing anchors", () => {
+    const options = {
+      source:
+        "https://raw.githubusercontent.com/webpack/postcss-loader/main/README.md",
+    };
+    const loaderMDData = "[Example](https://example.com/page#Section#Nested)";
+    expect(processReadme(loaderMDData, options)).toBe(
+      "[Example](https://example.com/page#section#nested)",
+    );
+  });
+
   it("should preserve comments inside code blocks", () => {
     const options = {
       source:

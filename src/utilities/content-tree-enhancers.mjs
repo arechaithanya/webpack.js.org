@@ -52,11 +52,7 @@ export const enhance = (tree, options) => {
       .use(extractAnchors, { anchors, levels: 3 })
       .use(remarkRemoveHeadingId)
       .use(remarkHtml)
-      .process(content, (err) => {
-        if (err) {
-          throw err;
-        }
-      });
+      .processSync(content);
 
     tree.anchors = anchors;
 
@@ -73,14 +69,16 @@ export const enhance = (tree, options) => {
 
     const isBlogItem = normalizedPath.includes("/blog/");
     if (isBlogItem) {
-      const teaser = (body || "")
+      const teaserLines = (body || "")
         .split("\n")
-        .filter((line) => line.trim() && !line.trim().startsWith("#"))
+        .filter((line) => line.trim() && !line.trim().startsWith("#"));
+      const teaserText = teaserLines
         .slice(0, 3)
         .join(" ")
-        .replaceAll(/\[([^\]]+)\]\([^)]+\)/g, "$1") // Strip markdown links but keep text
-        .slice(0, 240);
-      tree.teaser = `${teaser}...`;
+        .replaceAll(/\[([^\]]+)\]\([^)]+\)/g, "$1"); // Strip markdown links but keep text
+      const teaserContent = teaserText.slice(0, 240);
+      const isTruncated = teaserLines.length > 3 || teaserText.length > 240;
+      tree.teaser = isTruncated ? `${teaserContent}...` : teaserContent;
     }
 
     Object.assign(

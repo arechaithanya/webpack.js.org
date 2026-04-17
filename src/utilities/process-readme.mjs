@@ -66,9 +66,10 @@ function linkFixerFactory(sourceUrl) {
 
     // Lowercase all fragment links, since markdown generators do the same
     if (href.includes("#")) {
-      const [urlPath, urlFragment] = href.split("#");
-
-      href = `${urlPath}#${urlFragment.toLowerCase()}`;
+      const fragmentIndex = href.indexOf("#");
+      href = `${href.slice(0, fragmentIndex)}#${href
+        .slice(fragmentIndex + 1)
+        .toLowerCase()}`;
     }
 
     if (oldHref !== href) {
@@ -77,16 +78,6 @@ function linkFixerFactory(sourceUrl) {
 
     return markdownLink.replaceAll(oldHref, href);
   };
-}
-
-function getMatches(string, regex) {
-  const matches = [];
-  let match;
-
-  while ((match = regex.exec(string))) {
-    matches.push(match);
-  }
-  return matches;
 }
 
 export default function processREADME(body, options = {}) {
@@ -141,10 +132,11 @@ export default function processREADME(body, options = {}) {
   );
 
   // find the loaders links
-  const loaderMatches = getMatches(
-    processingString,
-    /https?:\/\/github.com\/(webpack|webpack-contrib)\/([-A-za-z0-9]+-loader\/?)([)"])/g,
-  );
+  const loaderMatches = [
+    ...processingString.matchAll(
+      /https?:\/\/github.com\/(webpack|webpack-contrib)\/([-A-za-z0-9]+-loader\/?)([)"])/g,
+    ),
+  ];
   // dont make relative links for excluded loaders
   for (const match of loaderMatches) {
     if (!excludedLoaders.includes(`${match[1]}/${match[2]}`)) {
@@ -155,10 +147,11 @@ export default function processREADME(body, options = {}) {
     }
   }
 
-  const pluginMatches = getMatches(
-    processingString,
-    /https?:\/\/github.com\/(webpack|webpack-contrib)\/([-A-za-z0-9]+-plugin\/?)([)"])/g,
-  );
+  const pluginMatches = [
+    ...processingString.matchAll(
+      /https?:\/\/github.com\/(webpack|webpack-contrib)\/([-A-za-z0-9]+-plugin\/?)([)"])/g,
+    ),
+  ];
   // dont make relative links for excluded loaders
   for (const match of pluginMatches) {
     if (!excludedPlugins.includes(`${match[1]}/${match[2]}`)) {

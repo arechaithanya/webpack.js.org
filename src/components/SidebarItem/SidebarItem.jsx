@@ -14,7 +14,8 @@ import list2Tree from "../../utilities/list2Tree/index.js";
  * @returns {boolean}
  */
 function isOpen(currentPage, url) {
-  return new RegExp(`${currentPage}/?$`).test(url);
+  const normalize = (value = "") => value.replace(/\/?$/, "/");
+  return normalize(url) === normalize(currentPage);
 }
 
 /**

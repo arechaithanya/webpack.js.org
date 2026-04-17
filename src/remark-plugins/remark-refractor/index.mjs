@@ -51,16 +51,14 @@ function attacher({ include, exclude } = {}) {
     try {
       data.hChildren = refractor.highlight(node.value, lang).children;
       for (const child of data.hChildren) {
-        if (
-          child.properties &&
-          child.properties.className.includes("keyword")
-        ) {
-          if (child.children[1]) {
-            child.properties.componentname = child.children[1].value.trim();
+        if (child.properties?.className?.includes("keyword")) {
+          const componentName = child.children?.[1]?.value?.trim();
+          if (componentName) {
+            child.properties.componentname = componentName;
           }
-          if (child.children[2]) {
-            child.properties.url =
-              child.children[2].children[0].value.replaceAll('"', "");
+          const url = child.children?.[2]?.children?.[0]?.value;
+          if (url) {
+            child.properties.url = url.replaceAll('"', "");
           }
         }
       }

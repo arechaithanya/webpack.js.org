@@ -7,11 +7,15 @@ export default (tree) => {
     }
 
     if ("children" in node) {
-      node.children.map(crawl);
+      for (const child of node.children) {
+        crawl(child);
+      }
     }
   };
 
-  tree.children.map(crawl);
+  for (const child of tree.children) {
+    crawl(child);
+  }
 
   return paths;
 };
