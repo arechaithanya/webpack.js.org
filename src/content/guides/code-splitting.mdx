@@ -118,7 +118,7 @@ cacheable modules 530 KiB
   ./src/index.js 257 bytes [built] [code generated]
   ./src/another-module.js 84 bytes [built] [code generated]
   ./node_modules/lodash/lodash.js 530 KiB [built] [code generated]
-webpack 5.4.0 compiled successfully in 245 ms
+webpack 5.x.x compiled successfully in 245 ms
 ```
 
 As mentioned there are some pitfalls to this approach:
@@ -216,7 +216,7 @@ cacheable modules 530 KiB
   ./node_modules/lodash/lodash.js 530 KiB [built] [code generated]
   ./src/another-module.js 84 bytes [built] [code generated]
   ./src/index.js 257 bytes [built] [code generated]
-webpack 5.4.0 compiled successfully in 249 ms
+webpack 5.x.x compiled successfully in 249 ms
 ```
 
 As you can see there's another `runtime.bundle.js` file generated besides `shared.bundle.js`, `index.bundle.js` and `another.bundle.js`.
@@ -271,7 +271,7 @@ cacheable modules 530 KiB
   ./src/index.js 257 bytes [built] [code generated]
   ./src/another-module.js 84 bytes [built] [code generated]
   ./node_modules/lodash/lodash.js 530 KiB [built] [code generated]
-webpack 5.4.0 compiled successfully in 241 ms
+webpack 5.x.x compiled successfully in 241 ms
 ```
 
 Here are some other useful plugins and loaders provided by the community for splitting code:
@@ -373,7 +373,7 @@ runtime modules 7.37 KiB 11 modules
 cacheable modules 530 KiB
   ./src/index.js 434 bytes [built] [code generated]
   ./node_modules/lodash/lodash.js 530 KiB [built] [code generated]
-webpack 5.4.0 compiled successfully in 268 ms
+webpack 5.x.x compiled successfully in 268 ms
 ```
 
 T> You can also use magic comment `webpackExports` with `import()` to expose specific exports from a dynamically imported module:
