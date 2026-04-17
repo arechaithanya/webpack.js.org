@@ -166,7 +166,7 @@ cacheable modules 539 KiB
   modules by path ./src/ 965 bytes
     ./src/index.js + 1 modules 639 bytes [built] [code generated]
     ./node_modules/css-loader/dist/cjs.js!./src/style.css 326 bytes [built] [code generated]
-webpack 5.4.0 compiled successfully in 2231 ms
+webpack 5.x.x compiled successfully in 2231 ms
 ```
 
 Open up `dist/index.html` in your browser again and you should see that `Hello webpack` is now styled in red. To see what webpack did, inspect the page (don't view the page source, as it won't show you the result, because the `<style>` tag is dynamically created by JavaScript) and look at the page's head tags. It should contain the style block that we imported in `index.js`.
@@ -285,7 +285,7 @@ cacheable modules 540 KiB (javascript) 9.88 KiB (asset)
     ./src/index.js + 1 modules 794 bytes [built] [code generated]
     ./src/icon.png 42 bytes (javascript) 9.88 KiB (asset) [built] [code generated]
     ./node_modules/css-loader/dist/cjs.js!./src/style.css 648 bytes [built] [code generated]
-webpack 5.4.0 compiled successfully in 1972 ms
+webpack 5.x.x compiled successfully in 1972 ms
 ```
 
 If all went well, you should now see your icon as a repeating background, as well as an `img` element beside our `Hello webpack` text. If you inspect this element, you'll see that the actual filename has changed to something like `29822eaa871e8eadeaa4.png`. This means webpack found our file in the `src` folder and processed it!
@@ -396,7 +396,7 @@ cacheable modules 541 KiB (javascript) 43.1 KiB (asset)
     ./src/icon.png 42 bytes (javascript) 9.88 KiB (asset) [built] [code generated]
     ./src/my-font.woff2 42 bytes (javascript) 14.5 KiB (asset) [built] [code generated]
     ./src/my-font.woff 42 bytes (javascript) 18.8 KiB (asset) [built] [code generated]
-webpack 5.4.0 compiled successfully in 2142 ms
+webpack 5.x.x compiled successfully in 2142 ms
 ```
 
 Open up `dist/index.html` again and see if our `Hello webpack` text has changed to the new font. If all is well, you should see the changes.

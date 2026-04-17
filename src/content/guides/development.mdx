@@ -122,7 +122,7 @@ cacheable modules 530 KiB
   ./src/index.js 406 bytes [built] [code generated]
   ./src/print.js 83 bytes [built] [code generated]
   ./node_modules/lodash/lodash.js 530 KiB [built] [code generated]
-webpack 5.4.0 compiled successfully in 706 ms
+webpack 5.x.x compiled successfully in 706 ms
 ```
 
 Now open the resulting `index.html` file in your browser. Click the button and look in your console where the error is displayed. The error should say something like this:
@@ -171,12 +171,12 @@ Let's add an npm script that will start webpack's Watch Mode:
    "author": "",
    "license": "ISC",
    "devDependencies": {
-     "html-webpack-plugin": "^5.0.0",
-     "webpack": "^5.4.0",
-     "webpack-cli": "^6.0.0"
+     "html-webpack-plugin": "^5.6.6",
+     "webpack": "^5.105.0",
+     "webpack-cli": "^7.0.0"
    },
    "dependencies": {
-     "lodash": "^4.17.20"
+     "lodash": "^4.17.21"
    }
  }
 ```
@@ -273,13 +273,13 @@ Let's add a script to easily run the dev server as well:
    "author": "",
    "license": "ISC",
    "devDependencies": {
-     "html-webpack-plugin": "^5.0.0",
-     "webpack": "^5.4.0",
-     "webpack-cli": "^6.0.0",
-     "webpack-dev-server": "^5.0.0"
+     "html-webpack-plugin": "^5.6.6",
+     "webpack": "^5.105.0",
+     "webpack-cli": "^7.0.0",
+     "webpack-dev-server": "^5.2.3"
    },
    "dependencies": {
-     "lodash": "^4.17.20"
+     "lodash": "^4.17.21"
    }
  }
 ```
@@ -399,15 +399,15 @@ Now add an npm script to make it a little easier to run the server:
    "author": "",
    "license": "ISC",
    "devDependencies": {
-     "express": "^4.17.1",
-     "html-webpack-plugin": "^5.0.0",
-     "webpack": "^5.4.0",
-     "webpack-cli": "^6.0.0",
-     "webpack-dev-middleware": "^4.0.2",
-     "webpack-dev-server": "^5.0.0"
+     "express": "^5.2.1",
+     "html-webpack-plugin": "^5.6.6",
+     "webpack": "^5.105.0",
+     "webpack-cli": "^7.0.0",
+     "webpack-dev-middleware": "^8.0.3",
+     "webpack-dev-server": "^5.2.3"
    },
    "dependencies": {
-     "lodash": "^4.17.20"
+     "lodash": "^4.17.21"
    }
  }
 ```
@@ -425,12 +425,12 @@ Example app listening on port 3000!
 <i>   ./src/index.js 406 bytes [built] [code generated]
 <i>   ./src/print.js 83 bytes [built] [code generated]
 <i>   ./node_modules/lodash/lodash.js 530 KiB [built] [code generated]
-<i> webpack 5.4.0 compiled successfully in 709 ms
+<i> webpack 5.x.x compiled successfully in 709 ms
 <i> [webpack-dev-middleware] Compiled successfully.
 <i> [webpack-dev-middleware] Compiling...
 <i> [webpack-dev-middleware] assets by status 1.38 MiB [cached] 2 assets
 <i> cached modules 530 KiB (javascript) 1.9 KiB (runtime) [cached] 12 modules
-<i> webpack 5.4.0 compiled successfully in 19 ms
+<i> webpack 5.x.x compiled successfully in 19 ms
 <i> [webpack-dev-middleware] Compiled successfully.
 ```
 
