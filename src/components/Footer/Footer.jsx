@@ -10,7 +10,7 @@ const footerLinkClasses =
 
 const Footer = () => (
   <footer className="w-full flex-[0_0_auto] print:hidden">
-    <Container className="mx-auto max-w-[900px] px-5 pb-[30px] pt-[40px] text-center [&_a]:text-[#3b7eb5]">
+    <Container className="mx-auto max-w-[900px] px-5 pb-[30px] pt-[40px] text-center [&_a]:text-[var(--color-link-accessible)] [&_a:hover]:text-[var(--color-link-accessible-hover)] dark:[&_a]:text-[var(--color-link-accessible-dark)] dark:[&_a:hover]:text-white">
       <div className="mb-[24px] flex justify-center">
         <a href="https://openjsf.org" target="_blank" rel="noopener noreferrer">
           <img
@@ -38,10 +38,7 @@ const Footer = () => (
       </p>
       <p className="mx-auto mt-[18px] text-[15px] leading-[1.6] text-[#333333] dark:text-[#e0e0e0]">
         <a href="https://openjsf.org">The OpenJS Foundation</a> |{" "}
-        <a href="https://ai-coding-assistants-policy.openjsf.org/">
-          AI Coding Assistants Policy
-        </a>{" "}
-        | <a href="https://terms-of-use.openjsf.org">Terms of Use</a> |{" "}
+        <a href="https://terms-of-use.openjsf.org">Terms of Use</a> |{" "}
         <a href="https://privacy-policy.openjsf.org">Privacy Policy</a> |{" "}
         <a href="https://bylaws.openjsf.org">Bylaws</a> |{" "}
         <a href="https://code-of-conduct.openjsf.org">Code of Conduct</a> |{" "}

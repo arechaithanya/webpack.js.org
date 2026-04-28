@@ -30,15 +30,17 @@ contributors:
   - zowiebeha
 ---
 
+Webpack is a good fit when your application needs a customizable build pipeline: bundling JavaScript modules, processing assets, integrating loaders and plugins, and shaping output for different environments. For a very small page with one or two scripts, a bundler may be unnecessary at first; for an application with shared dependencies, npm packages, assets, and production builds, webpack gives you explicit control over how everything is assembled.
+
 Webpack is used to efficiently compile JavaScript modules. Once [installed](/guides/installation), you can interact with webpack either from its [CLI](/api/cli) or [API](/api/node). If you're still new to webpack, please read through the [core concepts](/concepts) and [this comparison](/comparison) to learn why you might use it over the other tools that are out in the community.
 
-W> The minimum supported Node.js version to run webpack 5 is 10.13.0 (LTS)
+W> The examples in this guide use `webpack-cli` 7, which requires Node.js 20.9.0 or later.
 
 <StackBlitzPreview example="getting-started?terminal=" />
 
 ## Quick Start (Minimal Working Example)
 
-If you just want to get a working webpack project up and running quickly, the easiest way is to scaffold one using `create-webpack-app`.
+If you want to get a working webpack project up and running quickly, the easiest way is to scaffold one using `create-webpack-app`.
 
 ```bash
 npx create-webpack-app webpack-demo
@@ -54,6 +56,8 @@ T> This command generates a ready-to-use webpack project with a sensible default
 First let's create a directory, initialize npm, [install webpack locally](/guides/installation/#local-installation), and install the [`webpack-cli`](https://github.com/webpack/webpack-cli) (the tool used to run webpack on the command line):
 
 ```bash
+# Run the commands for one package manager only.
+
 mkdir webpack-demo
 cd webpack-demo
 
@@ -114,7 +118,7 @@ document.body.appendChild(component());
   <head>
     <meta charset="utf-8" />
     <title>Getting Started</title>
-    <script src="https://unpkg.com/lodash@4.17.20"></script>
+    <script src="https://unpkg.com/lodash@4.17.21"></script>
   </head>
   <body>
     <script src="./src/index.js"></script>
@@ -122,7 +126,9 @@ document.body.appendChild(component());
 </html>
 ```
 
-We also need to adjust our `package.json` file in order to make sure we mark our package as `private`, as well as removing the `main` entry. We also add `"type": "module"` so that Node.js knows to process our configuration files as ES Modules. This is to prevent an accidental publish of your code, as well as enabling ES Module support for our scripts.
+We also need to adjust our `package.json` file in order to make sure we mark our package as `private`, as well as removing the `main` entry. This is to prevent an accidental publish of your code.
+
+We also add `"type": "module"` so that Node.js treats `.js` files in this project as ES modules. That setting applies project-wide, including future Node.js scripts and webpack configuration files. If you would rather keep Node's default CommonJS behavior, omit `"type": "module"` and write the configuration later in this guide with `require(...)` and `module.exports` instead of `import` and `export default`.
 
 T> If you want to learn more about the inner workings of `package.json`, then we recommend reading the [npm documentation](https://docs.npmjs.com/files/package.json).
 
@@ -143,13 +149,13 @@ T> If you want to learn more about the inner workings of `package.json`, then we
    "author": "",
    "license": "MIT",
    "devDependencies": {
-     "webpack": "^5.38.1",
-     "webpack-cli": "^6.0.0"
+     "webpack": "^5.105.0",
+     "webpack-cli": "^7.0.0"
    }
  }
 ```
 
-In this example, there are implicit dependencies between the `<script>` tags. Our `index.js` file depends on `lodash` being included in the page before it runs. This is because `index.js` never explicitly declared a need for `lodash`; it assumes that the global variable `_` exists.
+In this example, there are implicit dependencies between the `<script>` tags. Our `index.js` file depends on `lodash` being included in the page before it runs. This creates an implicit dependency on a global variable (`_`), making script execution order critical and harder to maintain.
 
 There are problems with managing JavaScript projects this way:
 
@@ -176,13 +182,15 @@ First we'll tweak our directory structure slightly, separating the "source" code
        └── index.js
 ```
 
-T> You may have noticed that `index.html` was created manually, even though it is now placed in the `dist` directory. Later on in [another guide](/guides/output-management/#setting-up-htmlwebpackplugin), we will generate `index.html` rather than edit it manually. Once this is done, it should be safe to empty the `dist` directory and to regenerate all the files within it.
+The `dist` directory is build output, so you usually do not hand-edit files there in a mature project. We are moving `index.html` into `dist` for now only as temporary scaffolding, so the browser has an HTML file that loads the first generated bundle. Later on in [another guide](/guides/output-management/#setting-up-htmlwebpackplugin), we will generate `index.html` rather than edit it manually. Once this is done, it should be safe to empty the `dist` directory and regenerate all the files within it.
 
 To bundle the `lodash` dependency with `index.js`, we'll need to install the library locally:
 
 ```bash
+# Run the command for one package manager only.
+
 # npm
-npm install --save lodash
+npm install lodash
 
 # yarn
 yarn add lodash
@@ -191,7 +199,7 @@ yarn add lodash
 pnpm add lodash
 ```
 
-T> When installing a package that will be bundled into your production bundle, you should use `npm install --save`. If you're installing a package for development purposes (e.g. a linter, testing libraries, etc.) then you should use `npm install --save-dev`. More information can be found in the [npm documentation](https://docs.npmjs.com/cli/install).
+T> With npm 5 and later, packages installed with `npm install <package>` are saved to `dependencies` by default. If you're installing a package for development purposes (e.g. a linter, testing libraries, etc.) then you should use `npm install --save-dev`. More information can be found in the [npm documentation](https://docs.npmjs.com/cli/install).
 
 Now, let's import `lodash` in our script:
 
@@ -223,7 +231,7 @@ Now, since we'll be bundling our scripts, we have to update our `index.html` fil
    <head>
      <meta charset="utf-8" />
      <title>Getting Started</title>
--    <script src="https://unpkg.com/lodash@4.17.20"></script>
+-    <script src="https://unpkg.com/lodash@4.17.21"></script>
    </head>
    <body>
 -    <script src="./src/index.js"></script>
@@ -239,6 +247,8 @@ In this setup, `index.js` explicitly requires `lodash` to be present, and binds 
 With that said, let's run `npx webpack` from the project root. If webpack is installed locally, `npx` will run the local binary from `node_modules/.bin`; otherwise, it may download and execute it. This command takes our script at `src/index.js` as the [entry point](/concepts/entry-points) and generates `dist/main.js` as the [output](/concepts/output).
 
 ```bash
+# Run the command for one package manager only.
+
 # npm
 npx webpack
 
@@ -254,18 +264,20 @@ runtime modules 1000 bytes 5 modules
 cacheable modules 530 KiB
   ./src/index.js 257 bytes [built] [code generated]
   ./node_modules/lodash/lodash.js 530 KiB [built] [code generated]
-webpack 5.4.0 compiled successfully in 1851 ms
+webpack 5.x.x compiled successfully in 1851 ms
 ```
 
 T> Your output may vary a bit, but if the build is successful then you are good to go.
+
+T> Webpack runs in production mode by default when no mode is set, so the output above includes `[minimized]` and the generated `dist/main.js` will be optimized for browsers rather than easy reading. While learning, you can run `npx webpack --mode development`, `yarn webpack --mode development`, or `pnpm exec webpack --mode development` to produce a more readable bundle.
 
 Open `index.html` from the `dist` directory in your browser and, if everything went right, you should see the following text: `'Hello webpack'`.
 
 ## Modules
 
-The [`import`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) and [`export`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export) statements have been standardized in [ES2015](https://babeljs.io/docs/en/learn/). They are supported in most of the browsers at this moment, however there are some browsers that don't recognize the new syntax. But don't worry, webpack does support them out of the box.
+The [`import`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) and [`export`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export) statements have been standardized in [ES2015](https://babeljs.io/docs/en/learn/). They are supported in most browsers at this moment, however there are some browsers that don't recognize the new syntax. But don't worry, webpack does support them out of the box.
 
-Behind the scenes, webpack actually "**transpiles**" the code so that older browsers can also run it. If you inspect `dist/main.js`, you might be able to see how webpack does this, it's quite ingenious! Besides `import` and `export`, webpack supports various other module syntaxes as well, see [Module API](/api/module-methods) for more information.
+Behind the scenes, webpack analyzes your module graph and bundles the modules into code that the browser can load in the right order. It handles module syntax such as `import` and `export`, and supports various other module syntaxes as well. See [Module API](/api/module-methods) for more information.
 
 Note that webpack will not alter any code other than `import` and `export` statements. If you are using other [ES2015 features](http://es6-features.org/), make sure to [use a transpiler](/loaders/#transpiling) such as [Babel](https://babeljs.io/) via webpack's [loader system](/concepts/loaders/).
 
@@ -312,6 +324,8 @@ export default {
 Now, let's run the build again but instead using our new configuration file:
 
 ```bash
+# Run the command for one package manager only.
+
 # npm
 npx webpack --config webpack.config.js
 
@@ -327,7 +341,7 @@ runtime modules 1000 bytes 5 modules
 cacheable modules 530 KiB
   ./src/index.js 257 bytes [built] [code generated]
   ./node_modules/lodash/lodash.js 530 KiB [built] [code generated]
-webpack 5.4.0 compiled successfully in 1934 ms
+webpack 5.x.x compiled successfully in 1934 ms
 ```
 
 T> If a `webpack.config.js` is present, the `webpack` command picks it up by default. We use the `--config` option here only to show that you can pass a configuration of any name. This will be useful for more complex configurations that need to be split into multiple files.
@@ -355,11 +369,11 @@ Given it's not particularly fun to run a local copy of webpack from the CLI, we 
    "author": "",
    "license": "ISC",
    "devDependencies": {
-     "webpack": "^5.4.0",
-     "webpack-cli": "^6.0.0"
+     "webpack": "^5.105.0",
+     "webpack-cli": "^7.0.0"
    },
    "dependencies": {
-     "lodash": "^4.17.20"
+     "lodash": "^4.17.21"
    }
  }
 ```
@@ -369,6 +383,8 @@ Now the `npm run build` command can be used in place of the `npx` command we use
 Now run the following command and see if your script alias works:
 
 ```bash
+# Run the command for one package manager only.
+
 # npm
 npm run build
 
@@ -385,7 +401,7 @@ runtime modules 1000 bytes 5 modules
 cacheable modules 530 KiB
   ./src/index.js 257 bytes [built] [code generated]
   ./node_modules/lodash/lodash.js 530 KiB [built] [code generated]
-webpack 5.4.0 compiled successfully in 1940 ms
+webpack 5.x.x compiled successfully in 1940 ms
 ```
 
 T> Custom parameters can be passed to webpack by adding two dashes between the `npm run build` command and your parameters, e.g. `npm run build -- --color`.

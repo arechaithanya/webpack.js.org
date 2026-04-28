@@ -115,7 +115,7 @@ runtime modules 344 bytes 2 modules
 cacheable modules 530 KiB
   ./src/index.js 191 bytes [built] [code generated]
   ./node_modules/lodash/lodash.js 530 KiB [built] [code generated]
-webpack 5.4.0 compiled successfully in 2910 ms
+webpack 5.x.x compiled successfully in 2910 ms
 ```
 
 We can also use the `ProvidePlugin` to expose a single export of a module by configuring it with an "array path" (e.g. `[module, child, ...children?]`). So let's imagine we only wanted to provide the `join` method from `lodash` wherever it's invoked:
