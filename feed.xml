@@ -4,11 +4,25 @@
         <title>webpack Blog</title>
         <link>https://webpack.js.org/blog/</link>
         <description>Announcements and updates from the webpack team</description>
-        <lastBuildDate>Fri, 08 May 2026 02:41:25 GMT</lastBuildDate>
+        <lastBuildDate>Sun, 05 Jul 2026 16:03:48 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
         <atom:link href="https://webpack.js.org/feed.xml" rel="self" type="application/rss+xml"/>
+        <item>
+            <title><![CDATA[Webpack 5.108]]></title>
+            <link>https://webpack.js.org/blog/2026-06-25-webpack-5-108/</link>
+            <guid isPermaLink="false">https://webpack.js.org/blog/2026-06-25-webpack-5-108/</guid>
+            <pubDate>Thu, 25 Jun 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[Webpack 5.108]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Webpack 5.107]]></title>
+            <link>https://webpack.js.org/blog/2026-05-19-webpack-5-107/</link>
+            <guid isPermaLink="false">https://webpack.js.org/blog/2026-05-19-webpack-5-107/</guid>
+            <pubDate>Tue, 19 May 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[Webpack 5.107]]></description>
+        </item>
         <item>
             <title><![CDATA[Webpack 5.106]]></title>
             <link>https://webpack.js.org/blog/2026-04-08-webpack-5-106/</link>
